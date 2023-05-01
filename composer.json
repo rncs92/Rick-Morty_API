@@ -1,0 +1,20 @@
+{
+    "name": "janis/rick-morty_api",
+    "autoload": {
+        "psr-4": {
+            "RickMorty\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rncs92",
+            "email": "123461096+rncs92@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.5",
+        "symfony/dotenv": "^5.4",
+        "nikic/fast-route": "^1.3",
+        "twig/twig": "^3.0"
+    }
+}
