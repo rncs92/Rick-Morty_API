@@ -41,7 +41,8 @@ class ApiClient
             $char->status,
             $char->species,
             $char->location->name,
-            $char->episode[0]
+            $char->episode[0],
+            $char->image
         );
     }
 }
