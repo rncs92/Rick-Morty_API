@@ -2,8 +2,6 @@
 
 namespace RickMorty\Models;
 
-use RickMorty\ApiClient;
-
 class Character
 {
     private string $name;
@@ -59,7 +57,6 @@ class Character
 
     public function getEpisodeId(): string
     {
-        //return (int)preg_replace('/[^0-9]+/', '', $this->episode);
         return $this->episode;
     }
     public function getAvatar(): string
