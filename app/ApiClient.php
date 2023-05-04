@@ -9,8 +9,7 @@ use stdClass;
 class ApiClient
 {
     private Client $client;
-    private const API_URL_CHARACTER = 'https://rickandmortyapi.com/api/character';
-    private const API_URL_CHARACTER2 = 'https://rickandmortyapi.com/api/character?page=2';
+    private const API_URL_CHARACTER = 'https://rickandmortyapi.com/api/character?page=';
     private const API_URL_EPISODES = 'https://rickandmortyapi.com/api/episode';
     //private string $apiKey;
 
@@ -20,16 +19,9 @@ class ApiClient
         //$this->apiKey = $_ENV['API_KEY'];
     }
 
-    public function fetchCharacters(): array
+    public function fetchCharacters(int $page = 1): array
     {
-        $response = $this->client->request('GET', self::API_URL_CHARACTER);
-        $data = json_decode($response->getBody()->getContents());
-        return $data->results;
-    }
-
-      public function fetchCharacters2(): array
-    {
-        $response = $this->client->request('GET', self::API_URL_CHARACTER2);
+        $response = $this->client->request('GET', self::API_URL_CHARACTER . $page);
         $data = json_decode($response->getBody()->getContents());
         return $data->results;
     }
@@ -41,9 +33,9 @@ class ApiClient
         return $this->createEpisode($data);
     }
 
-    public function createCharacterCollection(): array
+    public function createCharacterCollection(int $page): array
     {
-        $charactersData = $this->fetchCharacters();
+        $charactersData = $this->fetchCharacters($page);
 
         $charactersCollection = [];
         foreach($charactersData as $character) {
@@ -51,16 +43,6 @@ class ApiClient
         }
         return $charactersCollection;
 
-    }
-    public function createCharacterCollection2(): array
-    {
-        $charactersData = $this->fetchCharacters2();
-
-        $charactersCollection = [];
-        foreach($charactersData as $character) {
-            $charactersCollection[] = $this->createCharacter($character);
-        }
-        return $charactersCollection;
     }
 
     private function createCharacter(stdClass $character): Character

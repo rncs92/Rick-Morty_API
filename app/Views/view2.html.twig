@@ -22,7 +22,18 @@
                 <img class="rounded-t-lg" src="{{ character.avatar }}" alt="" style="display: block; margin: 0 auto;" />
                 <div class="p-5">
                     <h3 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ character.name }}</h3>
-                    <p class="mb-1 font-normal text-gray-800 dark:text-gray-400"><strong>Status: </strong> {{ character.status }}</p>
+                    <p class="mb-1 font-normal text-gray-800 dark:text-gray-400">
+                        <strong>Status: {% if character.status == 'Dead' %}
+                                <span class="font-bold text-red-900 dark:text-gray-400">{{ character.status }}</span>
+                            {% endif %}
+                            {% if character.status == 'Alive' %}
+                                <span class="font-bold text-green-900 dark:text-gray-400">{{ character.status }}</span>
+                            {% endif %}
+                            {% if character.status == 'unknown' %}
+                                <span class="font-bold text-gray-700 dark:text-gray-400">{{ character.status }}</span>
+                            {% endif %}
+                        </strong>
+                    </p>
                     <p class="mb-1 font-normal text-gray-800 dark:text-gray-400"><strong>Species: </strong> {{ character.species }}</p>
                     <p class="mb-1 font-normal text-gray-800 dark:text-gray-400"><strong>Last known location: </strong> {{ character.location }}</p>
                     <p class="mb-1 font-normal text-gray-800 dark:text-gray-400"><strong>First seen in: </strong>{{ character.firstepisode.name }}</p>

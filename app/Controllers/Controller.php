@@ -16,7 +16,7 @@ class Controller
 
     public function getCharacters(): TwigView
     {
-        $characters = $this->client->createCharacterCollection();
+        $characters = $this->client->createCharacterCollection(1);
 
         return new TwigView('view', [
             'characters' => $characters,
@@ -25,7 +25,7 @@ class Controller
 
     public function getCharacters2(): TwigView
     {
-        $characters = $this->client->createCharacterCollection2();
+        $characters = $this->client->createCharacterCollection(2);
 
         return new TwigView('view2', [
             'characters' => $characters,
