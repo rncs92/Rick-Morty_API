@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace RickMorty\Model;
+namespace RickMorty\Models;
+
+use RickMorty\ApiClient;
 
 class Character
 {
@@ -10,6 +12,9 @@ class Character
     private string $location;
     private string $episode;
     private string $avatar;
+    private string $url;
+    private ApiClient $client;
+
 
     public function __construct
     (
@@ -18,7 +23,8 @@ class Character
         string $species,
         string $location,
         string $episode,
-        string $avatar
+        string $avatar,
+        string $url
     )
     {
         $this->name = $name;
@@ -27,6 +33,8 @@ class Character
         $this->location = $location;
         $this->episode = $episode;
         $this->avatar = $avatar;
+        $this->url = $url;
+        $this->client = new ApiClient();
     }
 
     public function getName(): string
@@ -51,11 +59,17 @@ class Character
 
     public function getEpisode(): string
     {
-        return $this->episode;
+        $id = (int)preg_replace('/[^0-9]+/', '', $this->episode);
+        $episode = $this->client->fetchEpisodesById($id);
+        return $episode->getName();
     }
-
     public function getAvatar(): string
     {
         return $this->avatar;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 }
