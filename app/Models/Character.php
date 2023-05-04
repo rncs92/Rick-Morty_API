@@ -13,6 +13,7 @@ class Character
     private string $episode;
     private string $avatar;
     private string $url;
+    private Episode $firstEpisode;
 
     public function __construct
     (
@@ -22,7 +23,8 @@ class Character
         string $location,
         string $episode,
         string $avatar,
-        string $url
+        string $url,
+        Episode $firstEpisode
     )
     {
         $this->name = $name;
@@ -32,6 +34,7 @@ class Character
         $this->episode = $episode;
         $this->avatar = $avatar;
         $this->url = $url;
+        $this->firstEpisode = $firstEpisode;
     }
 
     public function getName(): string
@@ -54,7 +57,7 @@ class Character
         return $this->location;
     }
 
-    public function getEpisode(): string
+    public function getEpisodeId(): string
     {
         //return (int)preg_replace('/[^0-9]+/', '', $this->episode);
         return $this->episode;
@@ -67,6 +70,11 @@ class Character
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    public function getFirstEpisode(): Episode
+    {
+        return $this->firstEpisode;
     }
 
 }

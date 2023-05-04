@@ -65,6 +65,7 @@ class ApiClient
 
     private function createCharacter(stdClass $character): Character
     {
+        $id = (int)preg_replace('/[^0-9]+/', '', $character->episode[0]);
         return new Character(
             $character->name,
             $character->status,
@@ -72,7 +73,8 @@ class ApiClient
             $character->location->name,
             $character->episode[0],
             $character->image,
-            $character->url
+            $character->url,
+            $this->fetchEpisodesById($id)
         );
     }
 
