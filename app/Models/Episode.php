@@ -2,8 +2,6 @@
 
 namespace RickMorty\Models;
 
-use RickMorty\ApiClient;
-
 class Episode
 {
     private int $id;
