@@ -13,8 +13,6 @@ class Character
     private string $episode;
     private string $avatar;
     private string $url;
-    private ApiClient $client;
-
 
     public function __construct
     (
@@ -34,7 +32,6 @@ class Character
         $this->episode = $episode;
         $this->avatar = $avatar;
         $this->url = $url;
-        $this->client = new ApiClient();
     }
 
     public function getName(): string
@@ -59,9 +56,8 @@ class Character
 
     public function getEpisode(): string
     {
-        $id = (int)preg_replace('/[^0-9]+/', '', $this->episode);
-        $episode = $this->client->fetchEpisodesById($id);
-        return $episode->getName();
+        //return (int)preg_replace('/[^0-9]+/', '', $this->episode);
+        return $this->episode;
     }
     public function getAvatar(): string
     {
@@ -72,4 +68,5 @@ class Character
     {
         return $this->url;
     }
+
 }
