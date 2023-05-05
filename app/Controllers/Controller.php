@@ -24,15 +24,4 @@ class Controller
             'characters' => $characters,
         ]);
     }
-
-    public function getCharacters2(): TwigView
-    {
-        $page = $_GET['page'];
-
-        $characters = $this->client->createCharacterCollection($page);
-
-        return new TwigView('view2', [
-            'characters' => $characters,
-        ]);
-    }
 }
