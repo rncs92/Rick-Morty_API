@@ -10,7 +10,7 @@ use stdClass;
 class ApiClient
 {
     private Client $client;
-    private const API_URL_CHARACTER = 'https://rickandmortyapi.com/api/character?page=';
+    private const API_URL_CHARACTER = 'https://rickandmortyapi.com/api/character';
     private const API_URL_EPISODES = 'https://rickandmortyapi.com/api/episode';
 
     //private string $apiKey;
@@ -24,7 +24,11 @@ class ApiClient
     public function fetchCharacters(int $page = 1): array
     {
         if (!Cache::check('characters_' . $page)) {
-            $response = $this->client->request('GET', self::API_URL_CHARACTER . $page);
+            $response = $this->client->request('GET', self::API_URL_CHARACTER, [
+                'query' => [
+                    'page' => $page,
+                ],
+            ]);
             $rawData = $response->getBody()->getContents();
             Cache::set('characters_' . $page, $rawData);
         } else {
