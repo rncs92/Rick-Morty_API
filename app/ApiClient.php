@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 namespace RickMorty;
+
 use GuzzleHttp\Client;
 use RickMorty\Models\Character;
 use RickMorty\Models\Episode;
@@ -11,6 +12,7 @@ class ApiClient
     private Client $client;
     private const API_URL_CHARACTER = 'https://rickandmortyapi.com/api/character?page=';
     private const API_URL_EPISODES = 'https://rickandmortyapi.com/api/episode';
+
     //private string $apiKey;
 
     public function __construct()
@@ -21,15 +23,31 @@ class ApiClient
 
     public function fetchCharacters(int $page = 1): array
     {
-        $response = $this->client->request('GET', self::API_URL_CHARACTER . $page);
-        $data = json_decode($response->getBody()->getContents());
+        if (!Cache::check('characters_' . $page)) {
+            $response = $this->client->request('GET', self::API_URL_CHARACTER . $page);
+            $rawData = $response->getBody()->getContents();
+            Cache::set('characters_' . $page, $rawData);
+        } else {
+            $rawData = Cache::get('characters_' . $page);
+        }
+
+        $data = json_decode($rawData);
+
         return $data->results;
     }
 
     public function fetchEpisodesById(int $id): Episode
     {
-        $response = $this->client->request('GET', self::API_URL_EPISODES . "/$id");
-        $data = json_decode($response->getBody()->getContents());
+        if (!Cache::check('episode_' . $id)) {
+            $response = $this->client->request('GET', self::API_URL_EPISODES . "/$id");
+            $rawData = $response->getBody()->getContents();
+            Cache::set('episode_' . $id, $rawData);
+        } else {
+            $rawData = Cache::get('episode_' . $id);
+        }
+
+        $data = json_decode($rawData);
+
         return $this->createEpisode($data);
     }
 
@@ -38,7 +56,7 @@ class ApiClient
         $charactersData = $this->fetchCharacters($page);
 
         $charactersCollection = [];
-        foreach($charactersData as $character) {
+        foreach ($charactersData as $character) {
             $charactersCollection[] = $this->createCharacter($character);
         }
         return $charactersCollection;

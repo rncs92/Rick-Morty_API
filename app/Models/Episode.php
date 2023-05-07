@@ -9,6 +9,7 @@ class Episode
     private string $aired;
     private array $characters;
     private string $url;
+
     public function __construct(int $id, string $name, string $aired, array $characters, string $url)
     {
         $this->id = $id;

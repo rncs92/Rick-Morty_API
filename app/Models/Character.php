@@ -15,13 +15,13 @@ class Character
 
     public function __construct
     (
-        string $name,
-        string $status,
-        string $species,
-        string $location,
-        string $episode,
-        string $avatar,
-        string $url,
+        string  $name,
+        string  $status,
+        string  $species,
+        string  $location,
+        string  $episode,
+        string  $avatar,
+        string  $url,
         Episode $firstEpisode
     )
     {
@@ -59,6 +59,7 @@ class Character
     {
         return $this->episode;
     }
+
     public function getAvatar(): string
     {
         return $this->avatar;
