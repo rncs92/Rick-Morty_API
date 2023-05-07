@@ -16,7 +16,7 @@ class Controller
 
     public function getCharacters(): TwigView
     {
-        $page = (int)$_GET['page'] ?? 1;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
         $characters = $this->client->createCharacterCollection($page);
 
