@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Rick&Morty</title>
+</head>
+<body>
+<div class="bg-cyan-700">
+    <header>
+        <div class="2xl:container 2xl:mx-auto">
+            <div class="bg-cyan-700 dark:bg-gray-800 rounded shadow-lg py-5 px-7">
+                <nav class="flex justify-between">
+                    <div class="flex items-center space-x-3 lg:pr-16 pr-6">
+                        <img class="cursor-pointer dark:bg-white p-1 rounded-full"
+                             src="https://tuk-cdn.s3.amazonaws.com/can-uploader/header-1-svg1.svg" alt="circle"/>
+                        <h2 class="font-normal text-3xl leading-6 text-gray-800 dark:text-white">Rick & Morty Encyclopedia</h2>
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <form action="/" method="GET">
+                            <input type="hidden" name="page" value="{{ home }}">
+                            <button class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    type="submit">
+                                Characters
+                            </button>
+                        </form>
+                        <form action="/episodes" method="GET">
+                            <input type="hidden" name="page" value="{{ home }}">
+                            <button class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    type="submit">
+                                Episodes
+                            </button>
+                        </form>
+                        <form action="/locations" method="GET">
+                            <input type="hidden" name="page" value="{{ home }}">
+                            <button class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    type="submit">
+                                Locations
+                            </button>
+                        </form>
+                    </div>
+                </nav>
+                <br>
+
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-amber-600 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <div class="flex items-center">
+                                    Type
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <div class="flex items-center">
+                                    Dimension
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Edit</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for location in locations %}
+                            <tr class="bg-amber-200 border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ location.name }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ location.type }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ location.dimension }}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Planet Residents</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-center items-center">
+                    <form action="/locations" method="GET">
+                        <input type="hidden" name="page" value="{{ previous_page }}">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l-lg"
+                                type="submit">
+                            Previous
+                        </button>
+                    </form>
+                    <form action="/locations" method="GET">
+                        <input type="hidden" name="page" value="{{ next_page }}">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r-lg"
+                                type="submit">
+                            Next
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+<footer
+        class="bg-neutral-200 text-center dark:bg-neutral-700 lg:text-left">
+    <div class="p-4 text-center text-neutral-700 dark:text-neutral-200">
+        © 2023 Copyright:
+        <a
+                class="text-neutral-800 dark:text-neutral-400"
+                href="https://instagram.com/skepausis/"
+        >Jānis Šķēps</a
+        >
+    </div>
+</footer>
+</html>

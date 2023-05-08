@@ -5,6 +5,7 @@ namespace RickMorty;
 use GuzzleHttp\Client;
 use RickMorty\Models\Character;
 use RickMorty\Models\Episode;
+use RickMorty\Models\Location;
 use stdClass;
 
 class ApiClient
@@ -12,6 +13,7 @@ class ApiClient
     private Client $client;
     private const API_URL_CHARACTER = 'https://rickandmortyapi.com/api/character';
     private const API_URL_EPISODES = 'https://rickandmortyapi.com/api/episode';
+    private const API_URL_LOCATIONS = 'https://rickandmortyapi.com/api/location';
 
     //private string $apiKey;
 
@@ -55,6 +57,55 @@ class ApiClient
         return $this->createEpisode($data);
     }
 
+    public function fetchEpisodes($page = 1): array
+    {
+        if (!Cache::check('episodes_' . $page)) {
+            $response = $this->client->request('GET', self::API_URL_EPISODES, [
+                'query' => [
+                    'page' => $page
+                ]
+            ]);
+            $rawData = $response->getBody()->getContents();
+            Cache::set('episodes_' . $page, $rawData);
+        } else {
+            $rawData = Cache::get('episodes_' . $page);
+        }
+
+        $data = json_decode($rawData);
+
+        return $data->results;
+    }
+
+    public function fetchLocations($page = 1): array
+    {
+        if (!Cache::check('locations_' . $page)) {
+            $response = $this->client->request('GET', self::API_URL_LOCATIONS, [
+                'query' => [
+                    'page' => $page
+                ]
+            ]);
+            $rawData = $response->getBody()->getContents();
+            Cache::set('locations_' . $page, $rawData);
+        } else {
+            $rawData = Cache::get('locations_' . $page);
+        }
+
+        $data = json_decode($rawData);
+
+        return $data->results;
+    }
+
+    public function createEpisodesCollection(int $page): array
+    {
+        $episodesData = $this->fetchEpisodes($page);
+
+        $episodesCollection = [];
+        foreach ($episodesData as $episode) {
+            $episodesCollection[] = $this->createEpisode($episode);
+        }
+        return $episodesCollection;
+    }
+
     public function createCharacterCollection(int $page): array
     {
         $charactersData = $this->fetchCharacters($page);
@@ -64,6 +115,18 @@ class ApiClient
             $charactersCollection[] = $this->createCharacter($character);
         }
         return $charactersCollection;
+
+    }
+
+    public function createLocationCollection(int $page): array
+    {
+        $locationsData = $this->fetchLocations($page);
+
+        $locationsCollection = [];
+        foreach ($locationsData as $location) {
+            $locationsCollection[] = $this->createLocation($location);
+        }
+        return $locationsCollection;
 
     }
 
@@ -88,8 +151,21 @@ class ApiClient
             $episode->id,
             $episode->name,
             $episode->air_date,
+            $episode->episode,
             $episode->characters,
             $episode->url
+        );
+    }
+
+    private function createLocation(stdClass $location): Location
+    {
+        return new Location(
+            $location->id,
+            $location->name,
+            $location->type,
+            $location->dimension,
+            $location->residents,
+            $location->url
         );
     }
 }

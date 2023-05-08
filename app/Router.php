@@ -4,15 +4,14 @@ namespace RickMorty;
 
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
-use RickMorty\Controllers\Controller;
 use function FastRoute\simpleDispatcher;
 
 class Router
 {
     public static function response(array $routes): ?TwigView
     {
-        $dispatcher = simpleDispatcher(function(RouteCollector $router) use ($routes) {
-            foreach($routes as $route) {
+        $dispatcher = simpleDispatcher(function (RouteCollector $router) use ($routes) {
+            foreach ($routes as $route) {
                 [$httpMethod, $url, $handler] = $route;
                 $router->addRoute($httpMethod, $url, $handler);
             }
