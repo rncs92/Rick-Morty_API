@@ -23,8 +23,10 @@ class Controller
         return new TwigView('view', [
             'characters' => $characters,
             'page' => $page,
-            'next_page' => $page +1,
+            'next_page' => $page + 1,
             'previous_page' => max(1, $page - 1),
+            'home' => $page == 1,
+
         ]);
     }
 }
