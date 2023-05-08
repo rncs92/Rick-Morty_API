@@ -115,7 +115,6 @@ class ApiClient
             $charactersCollection[] = $this->createCharacter($character);
         }
         return $charactersCollection;
-
     }
 
     public function createLocationCollection(int $page): array
@@ -127,7 +126,6 @@ class ApiClient
             $locationsCollection[] = $this->createLocation($location);
         }
         return $locationsCollection;
-
     }
 
     private function createCharacter(stdClass $character): Character
