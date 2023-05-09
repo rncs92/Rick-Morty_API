@@ -127,12 +127,12 @@ class ApiClient
         $episode = $this->fetchEpisodesById($episodeId);
 
         $ids = [];
-        foreach($episode->getCharacters() as $episodeCharacters) {
+        foreach ($episode->getCharacters() as $episodeCharacters) {
             $ids[] = (int)preg_replace('/[^0-9]+/', '', $episodeCharacters);
         }
 
         $episodeCharacters = [];
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $episodeCharacters[] = $this->fetchCharactersById($id);
         }
         return $episodeCharacters;

@@ -17,7 +17,8 @@
                     <div class="flex items-center space-x-3 lg:pr-16 pr-6">
                         <img class="cursor-pointer dark:bg-white p-1 rounded-full"
                              src="https://tuk-cdn.s3.amazonaws.com/can-uploader/header-1-svg1.svg" alt="circle"/>
-                        <h2 class="font-normal text-3xl leading-6 text-gray-800 dark:text-white">Rick & Morty Encyclopedia</h2>
+                        <h2 class="font-normal text-3xl leading-6 text-gray-800 dark:text-white">Rick & Morty
+                            Encyclopedia</h2>
                     </div>
                     <div class="flex justify-center items-center">
                         <form action="/" method="GET">
@@ -74,23 +75,26 @@
                         </thead>
                         <tbody>
                         {% for episode in episodes %}
-                        <tr class="bg-amber-200 border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ episode.name }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ episode.id }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ episode.season }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ episode.aired }}
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="episode-characters?id={{ episode.id }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Episode Characters</a>
-                            </td>
-                        </tr>
+                            <tr class="bg-amber-200 border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ episode.name }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ episode.id }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ episode.season }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ episode.aired }}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="episode-characters?id={{ episode.id }}"
+                                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Episode
+                                        Characters</a>
+                                </td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
