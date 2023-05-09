@@ -58,4 +58,20 @@ class Controller
             'home' => 1,
         ]);
     }
+
+    public function getEpisodeCharacters(): TwigView
+    {
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 1;
+
+        $episodeCharacters = $this->client->episodeCharacters($id);
+
+        return new TwigView('episodeCharacters', [
+            'episodeCharacters' => $episodeCharacters,
+            'page' => $page,
+            'next_page' => min($page + 1, 7),
+            'previous_page' => max(1, $page - 1),
+            'home' => 1,
+        ]);
+    }
 }
