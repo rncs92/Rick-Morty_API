@@ -70,4 +70,15 @@ class Controller
             'home' => 1,
         ]);
     }
+
+    public function getLocationResidents(): TwigView
+    {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
+        $locationResidents = $this->client->locationResidents($id);
+
+        return new TwigView('locationResidents', [
+            'locationResidents' => $locationResidents,
+            'home' => 1,
+        ]);
+    }
 }

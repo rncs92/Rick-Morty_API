@@ -23,7 +23,7 @@ class ApiClient
         //$this->apiKey = $_ENV['API_KEY'];
     }
 
-    public function fetchCharacters(int $page = 1): array
+    private function fetchCharacters(int $page = 1): array
     {
         if (!Cache::check('charactersPage_' . $page)) {
             $response = $this->client->request('GET', self::API_URL_CHARACTER, [
@@ -42,38 +42,7 @@ class ApiClient
         return $data->results;
     }
 
-    public function fetchEpisodesById(int $id): Episode
-    {
-        if (!Cache::check('episode_' . $id)) {
-            $response = $this->client->request('GET', self::API_URL_EPISODES . "/$id");
-            $rawData = $response->getBody()->getContents();
-            Cache::set('episode_' . $id, $rawData);
-        } else {
-            $rawData = Cache::get('episode_' . $id);
-        }
-
-        $data = json_decode($rawData);
-
-        return $this->createEpisode($data);
-    }
-
-    public function fetchCharactersById(int $id): Character
-    {
-        if (!Cache::check('character_' . $id)) {
-            $response = $this->client->request('GET', self::API_URL_CHARACTER . "/$id");
-            $rawData = $response->getBody()->getContents();
-            Cache::set('character_' . $id, $rawData);
-        } else {
-            $rawData = Cache::get('character_' . $id);
-        }
-
-        $data = json_decode($rawData);
-
-        return $this->createCharacter($data);
-    }
-
-
-    public function fetchEpisodes($page = 1): array
+    private function fetchEpisodes($page = 1): array
     {
         if (!Cache::check('episodesPage_' . $page)) {
             $response = $this->client->request('GET', self::API_URL_EPISODES, [
@@ -92,7 +61,7 @@ class ApiClient
         return $data->results;
     }
 
-    public function fetchLocations($page = 1): array
+    private function fetchLocations($page = 1): array
     {
         if (!Cache::check('locationsPage_' . $page)) {
             $response = $this->client->request('GET', self::API_URL_LOCATIONS, [
@@ -111,6 +80,62 @@ class ApiClient
         return $data->results;
     }
 
+    private function fetchCharactersById(int $id): Character
+    {
+        if (!Cache::check('character_' . $id)) {
+            $response = $this->client->request('GET', self::API_URL_CHARACTER . "/$id");
+            $rawData = $response->getBody()->getContents();
+            Cache::set('character_' . $id, $rawData);
+        } else {
+            $rawData = Cache::get('character_' . $id);
+        }
+
+        $data = json_decode($rawData);
+
+        return $this->createCharacter($data);
+    }
+
+    private function fetchEpisodesById(int $id): Episode
+    {
+        if (!Cache::check('episode_' . $id)) {
+            $response = $this->client->request('GET', self::API_URL_EPISODES . "/$id");
+            $rawData = $response->getBody()->getContents();
+            Cache::set('episode_' . $id, $rawData);
+        } else {
+            $rawData = Cache::get('episode_' . $id);
+        }
+
+        $data = json_decode($rawData);
+
+        return $this->createEpisode($data);
+    }
+
+    private function fetchLocationsById(int $id): Location
+    {
+        if (!Cache::check('location_' . $id)) {
+            $response = $this->client->request('GET', self::API_URL_LOCATIONS . "/$id");
+            $rawData = $response->getBody()->getContents();
+            Cache::set('location_' . $id, $rawData);
+        } else {
+            $rawData = Cache::get('location_' . $id);
+        }
+
+        $data = json_decode($rawData);
+
+        return $this->createLocation($data);
+    }
+
+    public function createCharacterCollection(int $page): array
+    {
+        $charactersData = $this->fetchCharacters($page);
+
+        $charactersCollection = [];
+        foreach ($charactersData as $character) {
+            $charactersCollection[] = $this->createCharacter($character);
+        }
+        return $charactersCollection;
+    }
+
     public function createEpisodesCollection(int $page): array
     {
         $episodesData = $this->fetchEpisodes($page);
@@ -120,6 +145,17 @@ class ApiClient
             $episodesCollection[] = $this->createEpisode($episode);
         }
         return $episodesCollection;
+    }
+
+    public function createLocationCollection(int $page): array
+    {
+        $locationsData = $this->fetchLocations($page);
+
+        $locationsCollection = [];
+        foreach ($locationsData as $location) {
+            $locationsCollection[] = $this->createLocation($location);
+        }
+        return $locationsCollection;
     }
 
     public function episodeCharacters(int $episodeId = 1): array
@@ -138,27 +174,20 @@ class ApiClient
         return $episodeCharacters;
     }
 
-
-    public function createCharacterCollection(int $page): array
+    public function locationResidents(int $locationId = 1): array
     {
-        $charactersData = $this->fetchCharacters($page);
+        $location = $this->fetchLocationsById($locationId);
 
-        $charactersCollection = [];
-        foreach ($charactersData as $character) {
-            $charactersCollection[] = $this->createCharacter($character);
+        $ids = [];
+        foreach ($location->getResidents() as $locationResidents) {
+            $ids[] = (int)preg_replace('/[^0-9]+/', '', $locationResidents);
         }
-        return $charactersCollection;
-    }
 
-    public function createLocationCollection(int $page): array
-    {
-        $locationsData = $this->fetchLocations($page);
-
-        $locationsCollection = [];
-        foreach ($locationsData as $location) {
-            $locationsCollection[] = $this->createLocation($location);
+        $locationResidents = [];
+        foreach ($ids as $id) {
+            $locationResidents[] = $this->fetchCharactersById($id);
         }
-        return $locationsCollection;
+        return $locationResidents;
     }
 
     private function createCharacter(stdClass $character): Character
