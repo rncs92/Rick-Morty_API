@@ -8,4 +8,5 @@ return [
     ['GET', '/locations', [Controller::class, 'getLocations']],
     ['GET', '/episode-characters', [Controller::class, 'getEpisodeCharacters']],
     ['GET', '/location-residents', [Controller::class, 'getLocationResidents']],
+    ['GET', '/search', [Controller::class, 'searchCharacter']],
 ];

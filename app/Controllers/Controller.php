@@ -81,4 +81,14 @@ class Controller
             'home' => 1,
         ]);
     }
+
+    public function searchCharacter(): TwigView
+    {
+        $searchCollection = $this->client->searchCharacters();
+
+        return new TwigView('search', [
+            'characters' => $searchCollection,
+            'home' => 1,
+        ]);
+    }
 }

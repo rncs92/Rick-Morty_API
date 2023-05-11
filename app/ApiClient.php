@@ -23,6 +23,32 @@ class ApiClient
         //$this->apiKey = $_ENV['API_KEY'];
     }
 
+    public function searchCharacters(): array
+    {
+        if (!Cache::check('search_' . $_SERVER['QUERY_STRING'])) {
+            $response = $this->client->request('GET', self::API_URL_CHARACTER, [
+                'query' => [
+                    'name' => $_GET['name'] ?? '',
+                    'status' => $_GET['status'] ?? '',
+                    'species' => $_GET['species'] ?? '',
+                    'type' => $_GET['type'] ?? '',
+                    'gender' => $_GET['gender'] ?? '',
+                ],
+            ]);
+            $rawData = $response->getBody()->getContents();
+            Cache::set('search_' . $_SERVER['QUERY_STRING'], $rawData);
+        } else {
+            $rawData = Cache::get('search_' . $_SERVER['QUERY_STRING']);
+        }
+
+        $data = json_decode($rawData);
+
+        $searchCollection = [];
+        foreach($data->results as $character) {
+            $searchCollection[] = $this->createCharacter($character);
+        }
+        return $searchCollection;
+    }
     private function fetchCharacters(int $page = 1): array
     {
         if (!Cache::check('charactersPage_' . $page)) {
